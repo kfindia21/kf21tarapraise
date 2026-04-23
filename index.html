@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>21 Tara Mantra Counter</title>
+<title>21 Tara Praises Counter</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -30,11 +30,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 24px;
+    padding: 24px 24px 60px;
   }
 
-  /* subtle dot grid background */
   body::before {
     content: '';
     position: fixed;
@@ -54,9 +52,101 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin-top: 24px;
   }
 
-  /* Header */
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 32px;
+  }
+
+  #login-screen::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, #2e2e2e 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .login-box {
+    position: relative;
+    z-index: 1;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 20px;
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+  }
+
+  .login-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(200,245,87,0.1);
+    border: 0.5px solid rgba(200,245,87,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 26px;
+  }
+
+  .login-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-google:hover { border-color: var(--accent); background: rgba(200,245,87,0.04); }
+  .btn-google:active { transform: scale(0.98); }
+
+  .google-logo {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── HEADER ── */
   .header {
     display: flex;
     align-items: center;
@@ -73,6 +163,12 @@
     font-family: 'DM Mono', monospace;
   }
 
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
   .status-dot {
     display: flex;
     align-items: center;
@@ -87,6 +183,7 @@
     height: 7px;
     border-radius: 50%;
     background: var(--text-dim);
+    flex-shrink: 0;
   }
 
   .dot.live {
@@ -100,7 +197,49 @@
     50% { box-shadow: 0 0 0 6px rgba(200,245,87,0.05); }
   }
 
-  /* Main counter card */
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .user-avatar:hover { border-color: var(--accent); }
+
+  .user-avatar-initials {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .btn-signout {
+    background: none;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .btn-signout:hover { color: var(--danger); border-color: rgba(255,92,92,0.4); }
+
+  /* ── COUNTER CARD ── */
   .counter-card {
     background: var(--surface);
     border: 0.5px solid var(--border);
@@ -156,13 +295,77 @@
     font-family: 'DM Mono', monospace;
   }
 
-  /* Plus one button */
+  @keyframes shimmer {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+  }
+
+  .counter-number.loading { animation: shimmer 1.4s ease-in-out infinite; color: var(--text-dim); }
+
+  /* ── ANON TOGGLE ── */
+  .anon-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 4px;
+  }
+
+  .toggle-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .toggle-wrap {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .toggle-wrap input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--text-dim);
+    border-radius: 50%;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .toggle-wrap input:checked + .toggle-slider { background: rgba(200,245,87,0.15); border-color: rgba(200,245,87,0.3); }
+  .toggle-wrap input:checked + .toggle-slider::before { transform: translate(14px, -50%); background: var(--accent); }
+
+  /* ── PLUS BUTTON ── */
   .btn-plus {
     background: var(--accent);
     color: #0f0f0f;
     border: none;
     border-radius: var(--radius);
-    padding: 0;
     height: 64px;
     width: 100%;
     font-size: 28px;
@@ -174,21 +377,16 @@
     justify-content: center;
     gap: 10px;
     font-family: 'DM Sans', sans-serif;
-    letter-spacing: -0.01em;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
   }
 
   .btn-plus:hover { background: var(--accent-dim); }
   .btn-plus:active { transform: scale(0.97); }
+  .btn-plus:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-plus .btn-label { font-size: 16px; font-weight: 500; }
 
-  .btn-plus .btn-label {
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-  }
-
-  /* Bulk entry card */
+  /* ── BULK CARD ── */
   .bulk-card {
     background: var(--surface);
     border: 0.5px solid var(--border);
@@ -241,30 +439,135 @@
   .btn-add:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,245,87,0.05); }
   .btn-add:active { transform: scale(0.97); }
 
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--surface2);
+  /* ── LEADERBOARD ── */
+  .leaderboard-card {
+    background: var(--surface);
     border: 0.5px solid var(--border);
-    border-radius: 100px;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text-muted);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-    opacity: 0;
-    z-index: 100;
-    white-space: nowrap;
+    border-radius: var(--radius);
+    overflow: hidden;
   }
 
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  .toast.success { color: var(--accent); border-color: rgba(200,245,87,0.3); }
-  .toast.error { color: var(--danger); border-color: rgba(255,92,92,0.3); }
+  .lb-header {
+    padding: 14px 16px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-  /* Reset section */
+  .lb-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .lb-count {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: var(--surface2); }
+
+  .lb-rank {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .lb-rank.gold { color: #f5c542; }
+  .lb-rank.silver { color: #aaa; }
+  .lb-rank.bronze { color: #cd7f32; }
+
+  .lb-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1.5px solid var(--border);
+  }
+
+  .lb-avatar-initials {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+    border: 1.5px solid var(--border);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .lb-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text);
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .lb-name.you { color: var(--accent); }
+
+  .lb-bar-wrap {
+    width: 80px;
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .lb-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    opacity: 0.5;
+    transition: width 0.4s;
+  }
+
+  .lb-bar.you { opacity: 1; }
+
+  .lb-score {
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .lb-empty {
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── RESET SECTION ── */
   .reset-section {
     border-top: 0.5px solid var(--border);
     padding-top: 16px;
@@ -294,34 +597,11 @@
   .reset-panel {
     display: none;
     margin-top: 14px;
-    gap: 8px;
     flex-direction: column;
+    gap: 8px;
   }
 
   .reset-panel.open { display: flex; }
-
-  .reset-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .pin-input {
-    flex: 1;
-    background: var(--surface2);
-    border: 0.5px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 15px;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-    letter-spacing: 0.2em;
-  }
-
-  .pin-input:focus { border-color: var(--danger); }
-  .pin-input::placeholder { color: var(--text-dim); letter-spacing: 0.02em; }
 
   .btn-reset {
     background: rgba(255,92,92,0.08);
@@ -330,15 +610,14 @@
     color: var(--danger);
     font-size: 13px;
     font-weight: 500;
-    padding: 9px 16px;
+    padding: 11px 16px;
     cursor: pointer;
-    white-space: nowrap;
     transition: background 0.15s;
     font-family: 'DM Sans', sans-serif;
+    width: 100%;
   }
 
   .btn-reset:hover { background: rgba(255,92,92,0.15); }
-  .btn-reset:active { transform: scale(0.97); }
 
   .reset-hint {
     font-size: 11px;
@@ -347,39 +626,74 @@
     text-align: center;
   }
 
-  /* Footer */
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    opacity: 0;
+    z-index: 300;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.success { color: var(--accent); border-color: rgba(200,245,87,0.3); }
+  .toast.error { color: var(--danger); border-color: rgba(255,92,92,0.3); }
+
   .footer {
+    position: relative;
+    z-index: 1;
     text-align: center;
     font-size: 11px;
     color: var(--text-dim);
     font-family: 'DM Mono', monospace;
-    padding: 4px 0;
+    margin-top: 8px;
   }
-
-  /* Loading state */
-  .counter-number.loading {
-    color: var(--text-dim);
-  }
-
-  @keyframes shimmer {
-    0% { opacity: 0.4; }
-    50% { opacity: 1; }
-    100% { opacity: 0.4; }
-  }
-
-  .counter-number.loading { animation: shimmer 1.4s ease-in-out infinite; }
 </style>
 </head>
 <body>
 
-<div class="wrapper">
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-icon">⬡</div>
+    <div class="login-title">21 Tara Praises Counter</div>
+    <div class="login-sub">Sign in with your Google account to log number of praises.</div>
+    <button class="btn-google" id="btn-google-login">
+      <svg class="google-logo" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      Continue with Google
+    </button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="wrapper" id="app" style="display:none">
 
   <div class="header">
-    <span class="header-title">21 Tara Praise Counter</span>
-    <span class="status-dot">
-      <span class="dot" id="status-dot"></span>
-      <span id="status-text">connecting...</span>
-    </span>
+    <span class="header-title">21 Tara Praises Counter</span>
+    <div class="header-right">
+      <span class="status-dot">
+        <span class="dot" id="status-dot"></span>
+        <span id="status-text">connecting...</span>
+      </span>
+      <div id="user-avatar-wrap"></div>
+      <button class="btn-signout" onclick="signOut()">sign out</button>
+    </div>
   </div>
 
   <div class="counter-card">
@@ -388,168 +702,335 @@
     <div class="counter-sub" id="last-updated">–</div>
   </div>
 
+  <div class="anon-row">
+    <span class="toggle-label" id="anon-label">Submit anonymously</span>
+    <label class="toggle-wrap">
+      <input type="checkbox" id="anon-toggle">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
   <button class="btn-plus" id="btn-plus" onclick="addOne()" disabled>
     <span style="font-size:26px;line-height:1">+</span>
     <span class="btn-label">Add 1 Praise</span>
   </button>
 
   <div class="bulk-card">
-    <label for="bulk-input">Add bulk</label>
+    <label for="bulk-input">Add number of praises</label>
     <input class="bulk-input" id="bulk-input" type="number" min="1" max="9999" placeholder="e.g. 12" />
     <button class="btn-add" onclick="addBulk()">Add</button>
   </div>
 
-  <div class="reset-section">
-    <button class="reset-toggle" onclick="toggleReset()">
-      <span>⌁</span> Reset counter
-    </button>
+  <!-- LEADERBOARD -->
+  <div class="leaderboard-card">
+    <div class="lb-header">
+      <span class="lb-title">Contributors List</span>
+      <span class="lb-count" id="lb-member-count"></span>
+    </div>
+    <div id="leaderboard-body">
+      <div class="lb-empty">Loading...</div>
+    </div>
+  </div>
+
+  <!-- RESET (admin only) -->
+  <div class="reset-section" id="reset-section" style="display:none">
+    <button class="reset-toggle" onclick="toggleReset()">⌁ Reset counter</button>
     <div class="reset-panel" id="reset-panel">
-      <div class="reset-row">
-        <input class="pin-input" id="pin-input" type="password" maxlength="8" placeholder="Enter admin PIN" />
-        <button class="btn-reset" onclick="resetCounter()">Reset to 0</button>
-      </div>
-      <div class="reset-hint">Admin only — enter the PIN to reset the daily counter</div>
+      <button class="btn-reset" onclick="resetCounter()">Reset entire counter to 0</button>
+      <div class="reset-hint">This will clear all totals and the leaderboard. Cannot be undone.</div>
     </div>
   </div>
 
 </div>
 
-<div class="footer">kf-21tara · live sync</div>
-
+<div class="footer" id="footer" style="display:none">kf-21tara · live sync</div>
 <div class="toast" id="toast"></div>
 
-<!-- Firebase SDK -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, onSnapshot, runTransaction, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as fbSignOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, collection, onSnapshot, runTransaction, setDoc, deleteDoc, getDocs, writeBatch }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // ─── CONFIG ────────────────────────────────────────────
-  const firebaseConfig = {
-    apiKey: "AIzaSyDEgvopy6DethtC8PRNNoQDyJRRYHStBW0",
-    authDomain: "kf-21tara.firebaseapp.com",
-    projectId: "kf-21tara",
-    storageBucket: "kf-21tara.firebasestorage.app",
-    messagingSenderId: "687399754513",
-    appId: "1:687399754513:web:1e987eedce2f2c798b8ab0"
-  };
+// ── CONFIG ──────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyDEgvopy6DethtC8PRNNoQDyJRRYHStBW0",
+  authDomain: "kf-21tara.firebaseapp.com",
+  projectId: "kf-21tara",
+  storageBucket: "kf-21tara.firebasestorage.app",
+  messagingSenderId: "687399754513",
+  appId: "1:687399754513:web:1e987eedce2f2c798b8ab0"
+};
 
-  // ─── CHANGE THIS PIN ────────────────────────────────────
-  const RESET_PIN = "18061961";
-  // ───────────────────────────────────────────────────────
+const ADMIN_EMAIL = "kfindia21@gmail.com";
+// ────────────────────────────────────────────────────────
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const counterRef = doc(db, "counter", "main");
+const app   = initializeApp(firebaseConfig);
+const auth  = getAuth(app);
+const db    = getFirestore(app);
 
-  // Live listener
-  onSnapshot(counterRef, (snap) => {
+const counterRef = doc(db, "counter", "main");
+const usersCol   = collection(db, "users");
+
+let currentUser = null;
+let unsubCounter = null;
+let unsubUsers   = null;
+
+// ── AUTH STATE ──────────────────────────────────────────
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    showApp(user);
+  } else {
+    currentUser = null;
+    showLogin();
+  }
+});
+
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('footer').style.display = 'none';
+  if (unsubCounter) { unsubCounter(); unsubCounter = null; }
+  if (unsubUsers)   { unsubUsers();   unsubUsers   = null; }
+}
+
+function showApp(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('footer').style.display = 'block';
+  document.getElementById('btn-plus').disabled = false;
+
+  // Avatar in header
+  const wrap = document.getElementById('user-avatar-wrap');
+  if (user.photoURL) {
+    wrap.innerHTML = `<img class="user-avatar" src="${user.photoURL}" title="${user.displayName || user.email}">`;
+  } else {
+    const initials = getInitials(user.displayName || user.email);
+    wrap.innerHTML = `<div class="user-avatar-initials" title="${user.displayName || user.email}">${initials}</div>`;
+  }
+
+  // Admin reset
+  if (user.email === ADMIN_EMAIL) {
+    document.getElementById('reset-section').style.display = 'block';
+  }
+
+  startListeners();
+}
+
+// ── GOOGLE SIGN IN ──────────────────────────────────────
+document.getElementById('btn-google-login').onclick = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  } catch(e) {
+    showToast('Sign-in failed — please try again', 'error');
+  }
+};
+
+window.signOut = async () => {
+  await fbSignOut(auth);
+};
+
+// ── LIVE LISTENERS ──────────────────────────────────────
+function startListeners() {
+  // Counter total
+  unsubCounter = onSnapshot(counterRef, (snap) => {
     const el = document.getElementById('counter');
-    const dot = document.getElementById('status-dot');
-    const statusText = document.getElementById('status-text');
-    const btn = document.getElementById('btn-plus');
-
     el.classList.remove('loading');
-    dot.classList.add('live');
-    statusText.textContent = 'live';
-    btn.disabled = false;
+    document.getElementById('status-dot').classList.add('live');
+    document.getElementById('status-text').textContent = 'live';
 
-    if (snap.exists()) {
-      const count = snap.data().count || 0;
-      el.textContent = count.toLocaleString();
-      const updated = snap.data().updatedAt?.toDate?.();
-      document.getElementById('last-updated').textContent = updated
-        ? 'last update: ' + updated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        : 'no updates yet';
-    } else {
-      el.textContent = '0';
-      document.getElementById('last-updated').textContent = 'no updates yet';
-      // Create doc if doesn't exist
-      setDoc(counterRef, { count: 0 });
-    }
-  }, (err) => {
+    const count = snap.exists() ? (snap.data().count || 0) : 0;
+    el.textContent = count.toLocaleString();
+
+    const updated = snap.exists() && snap.data().updatedAt?.toDate?.();
+    document.getElementById('last-updated').textContent = updated
+      ? 'last update: ' + updated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      : 'no updates yet';
+
+    if (!snap.exists()) setDoc(counterRef, { count: 0 });
+  }, () => {
     document.getElementById('status-text').textContent = 'offline';
-    showToast('Connection error — check your internet', 'error');
   });
 
-  // Add 1
-  window.addOne = async function() {
-    const el = document.getElementById('counter');
-    el.classList.add('bump');
-    setTimeout(() => el.classList.remove('bump'), 300);
-    try {
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(counterRef);
-        const cur = snap.exists() ? (snap.data().count || 0) : 0;
-        tx.set(counterRef, { count: cur + 1, updatedAt: new Date() });
-      });
-    } catch(e) {
-      showToast('Could not update — try again', 'error');
-    }
-  };
-
-  // Add bulk
-  window.addBulk = async function() {
-    const input = document.getElementById('bulk-input');
-    const val = parseInt(input.value, 10);
-    if (!val || val < 1 || val > 9999) {
-      showToast('Enter a number between 1 and 9999', 'error');
-      return;
-    }
-    try {
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(counterRef);
-        const cur = snap.exists() ? (snap.data().count || 0) : 0;
-        tx.set(counterRef, { count: cur + val, updatedAt: new Date() });
-      });
-      showToast('+' + val + ' praises added', 'success');
-      input.value = '';
-    } catch(e) {
-      showToast('Could not update — try again', 'error');
-    }
-  };
-
-  // Reset
-  window.resetCounter = async function() {
-    const pin = document.getElementById('pin-input').value;
-    if (pin !== RESET_PIN) {
-      showToast('Incorrect PIN', 'error');
-      document.getElementById('pin-input').value = '';
-      return;
-    }
-    try {
-      await setDoc(counterRef, { count: 0, updatedAt: new Date() });
-      showToast('Counter reset to 0', 'success');
-      document.getElementById('pin-input').value = '';
-      document.getElementById('reset-panel').classList.remove('open');
-    } catch(e) {
-      showToast('Could not reset — try again', 'error');
-    }
-  };
-
-  // Toggle reset panel
-  window.toggleReset = function() {
-    document.getElementById('reset-panel').classList.toggle('open');
-  };
-
-  // Allow Enter key on bulk input
-  document.getElementById('bulk-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') window.addBulk();
+  // Per-user leaderboard
+  unsubUsers = onSnapshot(usersCol, (snap) => {
+    const users = [];
+    snap.forEach(d => users.push({ id: d.id, ...d.data() }));
+    renderLeaderboard(users);
   });
+}
 
-  // Allow Enter key on PIN input
-  document.getElementById('pin-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') window.resetCounter();
-  });
+// ── LEADERBOARD ─────────────────────────────────────────
+function renderLeaderboard(users) {
+  const body = document.getElementById('leaderboard-body');
+  const countEl = document.getElementById('lb-member-count');
 
-  // Toast helper
-  window.showToast = function(msg, type='') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show' + (type ? ' ' + type : '');
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => { t.className = 'toast'; }, 2800);
-  };
+  if (!users.length) {
+    body.innerHTML = '<div class="lb-empty">No praises logged yet — be the first!</div>';
+    countEl.textContent = '';
+    return;
+  }
+
+  users.sort((a, b) => (b.count || 0) - (a.count || 0));
+  const max = users[0].count || 1;
+  countEl.textContent = users.length + ' member' + (users.length !== 1 ? 's' : '');
+
+  const rankSymbols = ['#1', '#2', '#3'];
+  const rankClasses = ['gold', 'silver', 'bronze'];
+
+  body.innerHTML = users.map((u, i) => {
+    const isYou = currentUser && u.id === currentUser.uid;
+    const rankLabel = i < 3 ? rankSymbols[i] : '#' + (i + 1);
+    const rankClass = i < 3 ? rankClasses[i] : '';
+    const pct = Math.round((u.count || 0) / max * 100);
+    const name = u.displayName || 'Anonymous';
+    const isAnon = !u.displayName;
+
+    let avatarHtml;
+    if (isAnon) {
+      avatarHtml = `<div class="lb-avatar-initials" style="background:#222;color:var(--text-dim)">?</div>`;
+    } else if (u.photoURL) {
+      avatarHtml = `<img class="lb-avatar" src="${u.photoURL}" alt="${name}">`;
+    } else {
+      const color = avatarColor(u.id);
+      avatarHtml = `<div class="lb-avatar-initials" style="background:${color.bg};color:${color.fg}">${getInitials(name)}</div>`;
+    }
+
+    return `<div class="lb-row">
+      <span class="lb-rank ${rankClass}">${rankLabel}</span>
+      ${avatarHtml}
+      <span class="lb-name${isYou ? ' you' : ''}">${name}${isYou ? ' (you)' : ''}</span>
+      <div class="lb-bar-wrap"><div class="lb-bar${isYou ? ' you' : ''}" style="width:${pct}%"></div></div>
+      <span class="lb-score">${(u.count || 0).toLocaleString()}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── ADD ONE ─────────────────────────────────────────────
+window.addOne = async () => {
+  if (!currentUser) return;
+  bumpCounter();
+  await submitCount(1);
+};
+
+// ── ADD BULK ─────────────────────────────────────────────
+window.addBulk = async () => {
+  if (!currentUser) return;
+  const input = document.getElementById('bulk-input');
+  const val = parseInt(input.value, 10);
+  if (!val || val < 1 || val > 9999) {
+    showToast('Enter a number between 1 and 9999', 'error');
+    return;
+  }
+  await submitCount(val);
+  showToast('+' + val + ' praises added', 'success');
+  input.value = '';
+};
+
+async function submitCount(amount) {
+  const anon = document.getElementById('anon-toggle').checked;
+  const uid  = currentUser.uid;
+  const userRef = doc(db, "users", uid);
+
+  try {
+    await runTransaction(db, async (tx) => {
+      const cSnap = await tx.get(counterRef);
+      const uSnap = await tx.get(userRef);
+      const curTotal = cSnap.exists() ? (cSnap.data().count || 0) : 0;
+      const curUser  = uSnap.exists() ? (uSnap.data().count || 0) : 0;
+
+      tx.set(counterRef, { count: curTotal + amount, updatedAt: new Date() });
+
+      if (anon) {
+        // Store count under uid but no name/photo
+        tx.set(userRef, {
+          count: curUser + amount,
+          displayName: null,
+          photoURL: null,
+          updatedAt: new Date()
+        }, { merge: true });
+      } else {
+        tx.set(userRef, {
+          count: curUser + amount,
+          displayName: currentUser.displayName || currentUser.email,
+          photoURL: currentUser.photoURL || null,
+          updatedAt: new Date()
+        }, { merge: true });
+      }
+    });
+  } catch(e) {
+    showToast('Could not update — try again', 'error');
+  }
+}
+
+// ── RESET (admin only) ──────────────────────────────────
+window.toggleReset = () => {
+  document.getElementById('reset-panel').classList.toggle('open');
+};
+
+window.resetCounter = async () => {
+  if (!currentUser || currentUser.email !== ADMIN_EMAIL) {
+    showToast('Admin access only', 'error');
+    return;
+  }
+  try {
+    // Reset main counter
+    await setDoc(counterRef, { count: 0, updatedAt: new Date() });
+
+    // Delete all user docs
+    const batch = writeBatch(db);
+    const snap = await getDocs(usersCol);
+    snap.forEach(d => batch.delete(d.ref));
+    await batch.commit();
+
+    showToast('Counter and leaderboard reset', 'success');
+    document.getElementById('reset-panel').classList.remove('open');
+  } catch(e) {
+    showToast('Reset failed — try again', 'error');
+  }
+};
+
+// ── HELPERS ─────────────────────────────────────────────
+function bumpCounter() {
+  const el = document.getElementById('counter');
+  el.classList.add('bump');
+  setTimeout(() => el.classList.remove('bump'), 300);
+}
+
+function getInitials(name) {
+  if (!name) return '?';
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function avatarColor(uid) {
+  const colors = [
+    { bg: '#1a2e1a', fg: '#6fcf6f' },
+    { bg: '#1a1a2e', fg: '#6f9fcf' },
+    { bg: '#2e1a2e', fg: '#cf6fcf' },
+    { bg: '#2e2a1a', fg: '#cfb06f' },
+    { bg: '#1a2a2e', fg: '#6fcfcf' },
+    { bg: '#2e1a1a', fg: '#cf6f6f' },
+  ];
+  let hash = 0;
+  for (const c of uid) hash = (hash * 31 + c.charCodeAt(0)) & 0xffffffff;
+  return colors[Math.abs(hash) % colors.length];
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.className = 'toast'; }, 2800);
+}
+
+// Enter key on bulk input
+document.getElementById('bulk-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') window.addBulk();
+});
 </script>
-
 </body>
 </html>
