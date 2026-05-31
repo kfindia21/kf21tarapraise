@@ -689,9 +689,9 @@
 
   /* ── PLUS BUTTON ── */
   .btn-plus {
-    background: var(--accent);
-    color: #0f0f0f;
-    border: none;
+    background: rgba(100,160,90,0.25);
+    color: #c9e8a0;
+    border: 0.5px solid rgba(141,186,120,0.45);
     border-radius: var(--radius);
     height: 64px;
     width: 100%;
@@ -708,7 +708,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-plus:hover { background: var(--accent-dim); }
+  .btn-plus:hover { background: rgba(100,160,90,0.38); }
   .btn-plus:active { transform: scale(0.97); }
   .btn-plus:disabled { opacity: 0.4; cursor: not-allowed; }
   .btn-plus .btn-label { font-size: 16px; font-weight: 500; }
@@ -1159,14 +1159,6 @@
           <label for="bulk-input">Add number of praises</label>
           <input class="bulk-input" id="bulk-input" type="number" min="1" max="9999" placeholder="e.g. 12" />
           <button class="btn-add" onclick="addBulk()">Add</button>
-        </div>
-
-        <div class="leaderboard-card" style="margin-top:10px;">
-          <div class="lb-header">
-            <span class="lb-title">Contributors</span>
-            <span class="lb-count" id="lb-member-count"></span>
-          </div>
-          <div id="leaderboard-body"><div class="lb-empty">Loading...</div></div>
         </div>
 
         <div class="reset-section" id="reset-section" style="display:none; margin-top:10px;">
